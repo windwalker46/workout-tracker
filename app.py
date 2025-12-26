@@ -55,7 +55,60 @@ def get_workouts():
 
     return jsonify(workouts)
 
+# Update Workout Endpoint
+@app.route("/workouts/<int:workout_id>", methods=["PUT"])
+def update_workout(workout_id):
+    data = request.get_json()
+
+    if not data or "date" not in data or "name" not in data:
+        return jsonify({"error": "Missing required fields"}), 400
+
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute(
+        "UPDATE workouts SET date = ?, name = ? WHERE id = ?",
+        (data["date"], data["name"], workout_id)
+    )
+
+    if cursor.rowcount == 0:
+        return jsonify({"error": "Workout not found"}), 404
+
+    db.commit()
+
+    return jsonify({
+        "id": workout_id,
+        "date": data["date"],
+        "name": data["name"]
+    })
+
+# Delete Workout Endpoint
+@app.route("/workouts/<int:workout_id>", methods=["DELETE"])
+def delete_workout(workout_id):
+    db = get_db()
+    cursor = db.cursor()
+
+    # Delete exercises first (maintain referential integrity)
+    cursor.execute(
+        "DELETE FROM exercises WHERE workout_id = ?",
+        (workout_id,)
+    )
+
+    cursor.execute(
+        "DELETE FROM workouts WHERE id = ?",
+        (workout_id,)
+    )
+
+    if cursor.rowcount == 0:
+        return jsonify({"error": "Workout not found"}), 404
+
+    db.commit()
+    return jsonify({"message": "Workout deleted"})
+
+
+
 # Exercise Endpoints
+
 @app.route("/exercises", methods=["POST"])
 def create_exercise():
     data = request.get_json()
@@ -94,6 +147,8 @@ def create_exercise():
     )
 
     return jsonify(exercise.to_dict()), 201
+
+# Fetch Workout Detail with Exercises
 
 @app.route("/workouts/<int:workout_id>", methods=["GET"])
 def get_workout_detail(workout_id):
@@ -138,6 +193,27 @@ def get_workout_detail(workout_id):
     workout["exercises"] = exercises
 
     return jsonify(workout)
+
+
+# Delete Exercise Endpoint
+@app.route("/exercises/<int:exercise_id>", methods=["DELETE"])
+def delete_exercise(exercise_id):
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute(
+        "DELETE FROM exercises WHERE id = ?",
+        (exercise_id,)
+    )
+
+    if cursor.rowcount == 0:
+        return jsonify({"error": "Exercise not found"}), 404
+
+    db.commit()
+    return jsonify({"message": "Exercise deleted"})
+
+
+# Run the app
 
 if __name__ == "__main__":
     os.makedirs("instance", exist_ok=True)
