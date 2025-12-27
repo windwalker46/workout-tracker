@@ -17,11 +17,19 @@ function loadWorkouts() {
                 const li = document.createElement("li");
 
                 li.innerHTML = `
-                    <a href="/workouts/${workout.id}/view">
-                        ${workout.name} (${workout.date})
-                    </a>
-                    <button onclick="deleteWorkout(${workout.id})">Delete</button>
+                    <span>
+                        <strong>${workout.name}</strong> (${workout.date})
+                    </span>
+                    <span>
+                        <button onclick="window.location.href='/workouts/${workout.id}/view'">
+                            Manage
+                        </button>
+                        <button onclick="deleteWorkout(${workout.id})">
+                            Delete
+                        </button>
+                    </span>
                 `;
+
 
                 list.appendChild(li);
             });

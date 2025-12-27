@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>{{ workout.name }} ({{ workout.date }})</h2>
+<h2>Manage Workout: {{ workout.name }} ({{ workout.date }})</h2>
 
 <section>
-    <h3>Add Exercise</h3>
+    <h3>Add Exercise to This Workout</h3>
     <form id="exercise-form" data-workout-id="{{ workout.id }}">
         <input type="text" id="exercise-name" placeholder="Exercise name" required>
         <input type="number" id="sets" placeholder="Sets" required>
@@ -26,5 +26,7 @@
     </ul>
 </section>
 
-<a href="/">← Back to workouts</a>
+<button onclick="window.location.href='/'">
+    ← Back to workouts
+</button>
 {% endblock %}
