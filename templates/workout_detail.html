@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>{{ workout.name }} ({{ workout.date }})</h2>
+
+<section>
+    <h3>Add Exercise</h3>
+    <form id="exercise-form" data-workout-id="{{ workout.id }}">
+        <input type="text" id="exercise-name" placeholder="Exercise name" required>
+        <input type="number" id="sets" placeholder="Sets" required>
+        <input type="number" id="reps" placeholder="Reps" required>
+        <input type="number" id="weight" placeholder="Weight" required>
+        <button type="submit">Add Exercise</button>
+    </form>
+</section>
+
+<section>
+    <h3>Exercises</h3>
+    <ul id="exercise-list">
+        {% for ex in workout.exercises %}
+        <li>
+            {{ ex.name }} — {{ ex.sets }}x{{ ex.reps }} @ {{ ex.weight }}
+            <button onclick="deleteExercise({{ ex.id }})">Delete</button>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+
+<a href="/">← Back to workouts</a>
+{% endblock %}

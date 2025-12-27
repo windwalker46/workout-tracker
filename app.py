@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from db import get_db, close_db, init_db
 from models import Workout, Exercise
 
@@ -12,10 +12,57 @@ app.config["DATABASE"] = "instance/workouts.db"
 def teardown_db(exception):
     close_db(exception)
 
-
 @app.route("/")
-def health_check():
-    return jsonify({"status": "Workout Tracker API running"})
+def index():
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute("SELECT * FROM workouts ORDER BY date DESC")
+    rows = cursor.fetchall()
+
+    workouts = [
+        Workout(row["id"], row["date"], row["name"]).to_dict()
+        for row in rows
+    ]
+
+    return render_template("index.html", workouts=workouts)
+
+# View Workout Detail Page
+
+@app.route("/workouts/<int:workout_id>/view")
+def workout_view(workout_id):
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute("SELECT * FROM workouts WHERE id = ?", (workout_id,))
+    workout_row = cursor.fetchone()
+
+    if workout_row is None:
+        return "Workout not found", 404
+
+    cursor.execute("SELECT * FROM exercises WHERE workout_id = ?", (workout_id,))
+    exercise_rows = cursor.fetchall()
+
+    workout = Workout(
+        workout_row["id"],
+        workout_row["date"],
+        workout_row["name"]
+    ).to_dict()
+
+    workout["exercises"] = [
+        Exercise(
+            row["id"],
+            row["workout_id"],
+            row["name"],
+            row["sets"],
+            row["reps"],
+            row["weight"]
+        ).to_dict()
+        for row in exercise_rows
+    ]
+
+    return render_template("workout_detail.html", workout=workout)
+
 
 # Workout Endpoints
 

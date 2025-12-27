@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+    <h2>Add Workout</h2>
+    <form id="workout-form">
+        <input type="date" id="date" required>
+        <input type="text" id="name" placeholder="Workout name" required>
+        <button type="submit">Add Workout</button>
+    </form>
+</section>
+
+<section>
+    <h2>Workouts</h2>
+    <ul id="workout-list"></ul>
+</section>
+{% endblock %}
