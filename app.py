@@ -4,6 +4,8 @@ from models import Workout, Exercise
 
 import os
 
+# Flask Application Setup
+
 app = Flask(__name__)
 app.config["DATABASE"] = "instance/workouts.db"
 
@@ -11,6 +13,8 @@ app.config["DATABASE"] = "instance/workouts.db"
 @app.teardown_appcontext
 def teardown_db(exception):
     close_db(exception)
+
+# Home Page - List Workouts
 
 @app.route("/")
 def index():
@@ -134,8 +138,6 @@ def update_workout(workout_id):
 def delete_workout(workout_id):
     db = get_db()
     cursor = db.cursor()
-
-    # Delete exercises first (maintain referential integrity)
     cursor.execute(
         "DELETE FROM exercises WHERE workout_id = ?",
         (workout_id,)
@@ -155,7 +157,6 @@ def delete_workout(workout_id):
 
 
 # Exercise Endpoints
-
 @app.route("/exercises", methods=["POST"])
 def create_exercise():
     data = request.get_json()
@@ -196,7 +197,6 @@ def create_exercise():
     return jsonify(exercise.to_dict()), 201
 
 # Fetch Workout Detail with Exercises
-
 @app.route("/workouts/<int:workout_id>", methods=["GET"])
 def get_workout_detail(workout_id):
     db = get_db()
@@ -261,8 +261,9 @@ def delete_exercise(exercise_id):
 
 
 # Run the app
-
 if __name__ == "__main__":
     os.makedirs("instance", exist_ok=True)
     init_db()
-    app.run(debug=True)
+    #app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000)
+
