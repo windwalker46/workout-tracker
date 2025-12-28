@@ -20,7 +20,7 @@
         {% for ex in workout.exercises %}
         <li>
             {{ ex.name }} — {{ ex.sets }}x{{ ex.reps }} @ {{ ex.weight }}
-            <button onclick="deleteExercise({{ ex.id }})">Delete</button>
+            <button onclick="deleteExercise('{{ ex.id }}')">Delete</button>
         </li>
         {% endfor %}
     </ul>
