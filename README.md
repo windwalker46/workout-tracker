@@ -66,4 +66,5 @@ http://127.0.0.1:5000
 
 https://workout-tracker-kaun.onrender.com
 
-
+## Note
+This is a demo deployment. Data is shared and may reset on redeploy/restart.
