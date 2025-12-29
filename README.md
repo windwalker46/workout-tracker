@@ -3,6 +3,7 @@
 A simple full stack web application for tracking workouts and exercises.
 
 Users can create workouts, add exercises to each workout and manage their workout history.
+
 ---
 
 ## Features
