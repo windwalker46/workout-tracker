@@ -66,7 +66,4 @@ http://127.0.0.1:5000
 
 https://workout-tracker-kaun.onrender.com
 
-## Notes
-
-This project was built as a solo project to demonstrate full-stack web development fundamentals, including API design, CRUD operations, and frontend-backend integration.
 

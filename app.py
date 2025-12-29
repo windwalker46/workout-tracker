@@ -14,8 +14,7 @@ app.config["DATABASE"] = "instance/workouts.db"
 def teardown_db(exception):
     close_db(exception)
 
-# Home Page - List Workouts
-
+# Routes
 @app.route("/")
 def index():
     db = get_db()
@@ -31,8 +30,7 @@ def index():
 
     return render_template("index.html", workouts=workouts)
 
-# View Workout Detail Page
-
+# View Workout Detail
 @app.route("/workouts/<int:workout_id>/view")
 def workout_view(workout_id):
     db = get_db()
@@ -69,7 +67,6 @@ def workout_view(workout_id):
 
 
 # Workout Endpoints
-
 @app.route("/workouts", methods=["POST"])
 def create_workout():
     data = request.get_json()
@@ -106,7 +103,7 @@ def get_workouts():
 
     return jsonify(workouts)
 
-# Update Workout Endpoint
+# Update Workout
 @app.route("/workouts/<int:workout_id>", methods=["PUT"])
 def update_workout(workout_id):
     data = request.get_json()
@@ -133,7 +130,7 @@ def update_workout(workout_id):
         "name": data["name"]
     })
 
-# Delete Workout Endpoint
+# Delete Workout
 @app.route("/workouts/<int:workout_id>", methods=["DELETE"])
 def delete_workout(workout_id):
     db = get_db()
@@ -153,8 +150,6 @@ def delete_workout(workout_id):
 
     db.commit()
     return jsonify({"message": "Workout deleted"})
-
-
 
 # Exercise Endpoints
 @app.route("/exercises", methods=["POST"])
@@ -196,7 +191,7 @@ def create_exercise():
 
     return jsonify(exercise.to_dict()), 201
 
-# Fetch Workout Detail with Exercises
+# Fetch Workout Detail
 @app.route("/workouts/<int:workout_id>", methods=["GET"])
 def get_workout_detail(workout_id):
     db = get_db()
@@ -242,7 +237,7 @@ def get_workout_detail(workout_id):
     return jsonify(workout)
 
 
-# Delete Exercise Endpoint
+# Delete Exercise
 @app.route("/exercises/<int:exercise_id>", methods=["DELETE"])
 def delete_exercise(exercise_id):
     db = get_db()
@@ -260,7 +255,7 @@ def delete_exercise(exercise_id):
     return jsonify({"message": "Exercise deleted"})
 
 
-# Run the app
+# Run app
 if __name__ == "__main__":
     os.makedirs("instance", exist_ok=True)
     init_db()
