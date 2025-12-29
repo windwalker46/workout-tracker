@@ -55,7 +55,11 @@ http://127.0.0.1:5000
 ```
 ## Screenshots
 
-TODO: 
+### Home Page
+![Home Page](screenshots/home.png)
+
+### Workout Detail
+![Workout Detail](screenshots/workout-detail.png)
 
 ## Live Demo
 
