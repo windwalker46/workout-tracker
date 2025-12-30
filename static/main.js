@@ -100,3 +100,14 @@ function deleteExercise(exerciseId) {
     })
     .then(() => location.reload());
 }
+
+// App container
+class AppContainer extends HTMLElement {
+  connectedCallback() {
+    this.innerHTML = `
+      <slot></slot>
+    `;
+  }
+}
+
+customElements.define("app-container", AppContainer);
