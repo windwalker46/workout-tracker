@@ -104,9 +104,7 @@ function deleteExercise(exerciseId) {
 // App container
 class AppContainer extends HTMLElement {
   connectedCallback() {
-    this.innerHTML = `
-      <slot></slot>
-    `;
+    this.classList.add("app-container");
   }
 }
 
